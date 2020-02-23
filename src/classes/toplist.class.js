@@ -6,7 +6,7 @@ class Toplist {
         this.parent = document.getElementById(parentId);
         this._element = document.createElement("div");
         this._element.setAttribute("id", "mod_toplist");
-        this._element.innerHTML = `<h1>TOP PROCESSES<i>PID | NAME | CPU | MEM</i></h1><br>
+        this._element.innerHTML = `<h1>SENSOR DATA<i>RATE | NAME | MAX | VAL</i></h1><br>
         <table id="mod_toplist_table"></table>`;
 
         this.parent.append(this._element);
@@ -17,6 +17,24 @@ class Toplist {
         }, 2000);
     }
     updateList() {
+        let data = window.jsondata.toplist
+        let list = data.sensortable.sort((a, b) => {
+            return b.max-a.max
+        }).splice(0, 5);
+
+        document.querySelectorAll("#mod_toplist_table > tr").forEach(el => {
+            el.remove();
+        });
+        list.forEach(proc => {
+            let el = document.createElement("tr");
+            el.innerHTML = `<td>${proc.rate}</td>
+                            <td><strong>${proc.sensor}</strong></td>
+                            <td>${proc.max}</td>
+                            <td>${Math.round((parseFloat(proc.value) + Number.EPSILON) * 100) / 100}</td>`;
+            document.getElementById("mod_toplist_table").append(el);
+        });
+
+/*
         window.si.processes().then(data => {
             if (window.settings.excludeThreadsFromToplist === true) {
                 data.list = data.list.sort((a, b) => {
@@ -47,7 +65,7 @@ class Toplist {
                                 <td>${Math.round(proc.pmem*10)/10}%</td>`;
                 document.getElementById("mod_toplist_table").append(el);
             });
-        });
+        }); */
     }
 }
 

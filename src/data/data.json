@@ -32,6 +32,7 @@
     "conninfo": {"up": "0", "down": "0"},
     "sysinfo": {"uptime": "0", "battery": "0"},
     "netstat": {"parser": "nmea", "location": "Madison, WI US", "sat": "2", "geo": {"longitude": "43.051279", "latitude": "89.474382"}},
-    "hardwareInspector": {"hardware": "Teensy 4.0", "type": "DEMO", "version":"0.0.1"}
+    "hardwareInspector": {"hardware": "Teensy 4.0", "type": "DEMO", "version":"0.0.1"},
+    "toplist": {"sensortable": [{"sensor":"temp", "max":"115", "value":"0", "rate":"0"},{"sensor":"rh", "max":"0", "value":"0", "rate":"0"},{"sensor":"alt", "max":"1000", "value":"1000", "rate":"0"},{"sensor":"pressure", "max":"0", "value":"0", "rate":"0"},{"sensor":"sat", "max":"0", "value":"0", "rate":"0"}]}
 
 }
