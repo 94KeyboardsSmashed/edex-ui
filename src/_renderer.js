@@ -44,10 +44,13 @@ const settingsFile = path.join(settingsDir, "settings.json");
 const shortcutsFile = path.join(settingsDir, "shortcuts.json");
 const lastWindowStateFile = path.join(settingsDir, "lastWindowState.json");
 
+
+
 // Load config
 window.settings = require(settingsFile);
 window.shortcuts = require(shortcutsFile);
 window.lastWindowState = require(lastWindowStateFile);
+
 
 // Load CLI parameters
 if (electron.remote.process.argv.includes("--nointro")) {
@@ -198,6 +201,10 @@ function initSystemInformationProxy() {
 
 // Init audio
 window.audioManager = new AudioManager();
+
+// Init Datacollection
+window.dataRead = new ExternalData();
+console.log(window.dataRead.fetch("quat_w"))
 
 // See #223
 electron.remote.app.focus();

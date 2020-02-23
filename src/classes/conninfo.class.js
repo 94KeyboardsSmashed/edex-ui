@@ -6,7 +6,7 @@ class Conninfo {
         this.parent = document.getElementById(parentId);
         this.parent.innerHTML += `<div id="mod_conninfo">
             <div id="mod_conninfo_innercontainer">
-                <h1>DOWNLINK SPEED<i>MB/S</i></h1>
+                <h1>DOWNLINK SPEED<i>UP / DOWN, MB/S</i></h1>
                 <h2>TOTAL<i>0B IN</i></h2>
                 <canvas id="mod_conninfo_canvas_top"></canvas>
                 <canvas id="mod_conninfo_canvas_bottom"></canvas>
@@ -62,8 +62,19 @@ class Conninfo {
     }
     updateInfo() {
         let time = new Date().getTime();
+
+        let max0 = this.series[0].maxValue;
+        let max1 = -this.series[1].minValue;
+        if (max0 > max1) {
+            this.series[1].minValue = -max0;
+        } else if (max1 > max0) {
+            this.series[0].maxValue = max1;
+        }
+
         this.series[0].append(time, Math.random());
-        this.series[1].append(time, Math.random());
+        this.series[1].append(time, -Math.random());        
+
+        this.total.innerText = `${window.dataRead.fetch('quat_w')} OUT, ${window.dataRead.fetch('quat_w')} IN`.toUpperCase();
 /*
         if (window.mods.netstat.offline || window.mods.netstat.iface === null) {
             this.series[0].append(time, 0);
