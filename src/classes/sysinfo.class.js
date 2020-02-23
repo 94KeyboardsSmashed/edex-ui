@@ -2,19 +2,6 @@ class Sysinfo {
     constructor(parentId) {
         if (!parentId) throw "Missing parameters";
 
-        // See #255
-        let os;
-        switch (require("os").platform()) {
-            case "darwin":
-                os = "macOS";
-                break;
-            case "win32":
-                os = "win";
-                break;
-            default:
-                os = require("os").platform();
-        }
-
         // Create DOM
         this.parent = document.getElementById(parentId);
         this.parent.innerHTML += `<div id="mod_sysinfo">
@@ -27,8 +14,8 @@ class Sysinfo {
                 <h2>0:0:0</h2>
             </div>
             <div>
-                <h1>TYPE</h1>
-                <h2>${os}</h2>
+                <h1>UPLINK</h1>
+                <h2>DOWN</h2>
             </div>
             <div>
                 <h1>POWER</h1>
@@ -44,6 +31,10 @@ class Sysinfo {
         this.updateBattery();
         this.batteryUpdater = setInterval(() => {
             this.updateBattery();
+        }, 3000);
+        this.updateStatus();
+        this.statusUpdater = setInterval(() => {
+            this.updateStatus();
         }, 3000);
     }
     updateDate() {
@@ -98,6 +89,7 @@ class Sysinfo {
         }, timeToNewDay);
     }
     updateUptime() {
+        // Change to telmetry runtime and not computer runtime
         let uptime = {
             raw: Math.floor(require("os").uptime()),
             days: 0,
@@ -117,20 +109,25 @@ class Sysinfo {
         document.querySelector("#mod_sysinfo > div:nth-child(2) > h2").innerHTML = uptime.days+":"+uptime.hours+":"+uptime.minutes;
     }
     updateBattery() {
-        window.si.battery().then(bat => {
-            let indicator = document.querySelector("#mod_sysinfo > div:last-child > h2");
-            if (bat.hasbattery) {
-                if (bat.ischarging) {
-                    indicator.innerHTML = "CHARGE";
-                } else if (bat.acconnected || bat.timeremaining === -1) {
-                    indicator.innerHTML = "WIRED";
-                } else {
-                    indicator.innerHTML = bat.percent+"%";
-                }
-            } else {
-                indicator.innerHTML = "ON";
-            }
-        });
+        // Convert To Voltage
+        let indicator = document.querySelector("#mod_sysinfo > div:last-child > h2");
+        let charge = window.dataRead.fetch('quat_w');
+        if (!(charge < "3")){
+            indicator.innerHTML = charge+"V";
+        }
+        else{
+            indicator.innerHTML = "OFF";
+        }
+    }
+    updateStatus() {
+        // Determines whether there is a connection to the telemetry device
+        let indicator = document.querySelector("#mod_sysinfo > div:nth-child(3) > h2");
+        if (window.dataRead.fetch('quat_w') === true){
+            indicator.innerHTML = "UP";
+        }
+        else{
+            indicator.innerHTML = "DOWN";
+        }
     }
 }
 

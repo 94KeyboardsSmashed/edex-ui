@@ -71,8 +71,8 @@ class Conninfo {
             this.series[0].maxValue = max1;
         }
 
-        this.series[0].append(time, Math.random());
-        this.series[1].append(time, -Math.random());        
+        this.series[0].append(time, window.dataRead.fetch('quat_w'));
+        this.series[1].append(time, -window.dataRead.fetch('quat_w'));        
 
         this.total.innerText = `${window.dataRead.fetch('quat_w')} OUT, ${window.dataRead.fetch('quat_w')} IN`.toUpperCase();
 /*
