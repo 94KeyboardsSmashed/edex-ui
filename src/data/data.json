@@ -31,6 +31,7 @@
     "location": "Nowhere",
     "conninfo": {"up": "0", "down": "0"},
     "sysinfo": {"uptime": "0", "battery": "0"},
-    "netstat": {"parser": "nmea", "location": "Madison, WI US", "sat": "2", "geo": {"longitude": "43.051279", "latitude": "89.474382"}}
+    "netstat": {"parser": "nmea", "location": "Madison, WI US", "sat": "2", "geo": {"longitude": "43.051279", "latitude": "89.474382"}},
+    "hardwareInspector": {"hardware": "Teensy 4.0", "type": "DEMO", "version":"0.0.1"}
 
 }
