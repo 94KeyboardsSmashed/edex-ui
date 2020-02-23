@@ -10,15 +10,15 @@ class Netstat {
                 <div id="mod_netstat_innercontainer">
                     <div>
                         <h1>STATE</h1>
-                        <h2>UNKNOWN</h2>
+                        <h2>UNKNOWN</h2> <!-- ACTIVE, OFFLINE -->
                     </div>
                     <div>
-                        <h1>IPv4</h1>
-                        <h2>--.--.--.--</h2>
+                        <h1>LOCATION</h1>
+                        <h2>----,--,--</h2>
                     </div>
                     <div>
-                        <h1>PING</h1>
-                        <h2>--ms</h2>
+                        <h1>SATS</h1>
+                        <h2>--</h2>
                     </div>
                 </div>
             </div>
@@ -55,6 +55,18 @@ class Netstat {
         });
     }
     updateInfo() {
+        let fix = window.jsondata.connection;
+        if (fix){
+          console.log("yes");  
+        }
+        else{
+            console.log("no");
+        }
+
+
+
+
+
         window.si.networkInterfaces().then(async data => {
             let offline = false;
 

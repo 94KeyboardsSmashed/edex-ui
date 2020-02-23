@@ -111,7 +111,7 @@ class Sysinfo {
     updateBattery() {
         // Convert To Voltage
         let indicator = document.querySelector("#mod_sysinfo > div:last-child > h2");
-        let charge = window.dataRead.fetch('quat_w');
+        let charge = window.jsondata.sysinfo.battery;
         if (!(charge < "3")){
             indicator.innerHTML = charge+"V";
         }
@@ -122,7 +122,7 @@ class Sysinfo {
     updateStatus() {
         // Determines whether there is a connection to the telemetry device
         let indicator = document.querySelector("#mod_sysinfo > div:nth-child(3) > h2");
-        if (window.dataRead.fetch('quat_w') === true){
+        if (window.jsondata.connection === true){
             indicator.innerHTML = "UP";
         }
         else{

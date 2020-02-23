@@ -203,8 +203,7 @@ function initSystemInformationProxy() {
 window.audioManager = new AudioManager();
 
 // Init Datacollection
-window.dataRead = new ExternalData();
-console.log(window.dataRead.fetch("quat_w"))
+window.jsondata = require("./data/data.json")
 
 // See #223
 electron.remote.app.focus();

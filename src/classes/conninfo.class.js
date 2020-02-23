@@ -71,10 +71,10 @@ class Conninfo {
             this.series[0].maxValue = max1;
         }
 
-        this.series[0].append(time, window.dataRead.fetch('quat_w'));
-        this.series[1].append(time, -window.dataRead.fetch('quat_w'));        
+        this.series[0].append(time, window.jsondata.conninfo.up);
+        this.series[1].append(time, -window.jsondata.conninfo.down);        
 
-        this.total.innerText = `${window.dataRead.fetch('quat_w')} OUT, ${window.dataRead.fetch('quat_w')} IN`.toUpperCase();
+        this.total.innerText = `${window.jsondata.conninfo.up} OUT, ${window.jsondata.conninfo.down} IN`.toUpperCase();
 /*
         if (window.mods.netstat.offline || window.mods.netstat.iface === null) {
             this.series[0].append(time, 0);
