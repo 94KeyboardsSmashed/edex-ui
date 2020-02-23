@@ -12,8 +12,8 @@ class LocationGlobe {
         this.parent = document.getElementById(parentId);
         this.parent.innerHTML += `<div id="mod_globe">
             <div id="mod_globe_innercontainer">
-                <h1>WORLD VIEW<i>GLOBAL NETWORK MAP</i></h1>
-                <h2>ENDPOINT LAT/LON<i class="mod_globe_headerInfo">0.0000, 0.0000</i></h2>
+                <h1>WORLD VIEW<i>GLOBAL LOCATION</i></h1>
+                <h2>CURRENT LAT/LON<i class="mod_globe_headerInfo">0.0000, 0.0000</i></h2>
                 <div id="mod_globe_canvas_placeholder"></div>
                 <h3>OFFLINE</h3>
             </div>
@@ -165,9 +165,19 @@ class LocationGlobe {
         return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
     }
     updateLoc() {
-        if (window.mods.netstat.offline) {
-            document.querySelector("div#mod_globe").setAttribute("class", "offline");
-            document.querySelector("i.mod_globe_headerInfo").innerText = "(OFFLINE)";
+        if (!window.jsondata.connection || !window.jsondata.gps_fix) {
+            
+            
+            if (!window.jsondata.connection){
+                document.querySelector("i.mod_globe_headerInfo").innerText = "(OFFLINE)";
+                document.querySelector("div#mod_globe").setAttribute("class", "offline");
+                document.querySelector("div#mod_globe_innercontainer>h3").innerText = "OFFLINE";
+            } else {
+                document.querySelector("i.mod_globe_headerInfo").innerText = "(NO FIX)";
+                document.querySelector("div#mod_globe").setAttribute("class", "offline");
+                document.querySelector("div#mod_globe_innercontainer>h3").innerText = "NO FIX";
+            }
+
 
             this.removePins();
             this.removeMarkers();
@@ -185,7 +195,7 @@ class LocationGlobe {
         }
     }
     async updateConOnlineConnection() {
-        let newgeo = window.mods.netstat.ipinfo.geo;
+        let newgeo = window.jsondata.netstat.geo;
         newgeo.latitude = Math.round(newgeo.latitude*10000)/10000;
         newgeo.longitude = Math.round(newgeo.longitude*10000)/10000;
 

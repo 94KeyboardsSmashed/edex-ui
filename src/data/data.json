@@ -1,5 +1,5 @@
 {
-    "connection": false,
+    "connection": true,
     "timestamp": "XXXXX",
     "startTime": "XXXXX",
     "quat_w": "0",
@@ -18,8 +18,8 @@
     "temp": "0",
     "pressure": "0",
     "alt": "0",
-    "rh": "0",
-    "gps_fix": false,
+    "rh": "5",
+    "gps_fix": true,
     "lat": "0",
     "long": "0",
     "lat_dir": "0",
@@ -30,5 +30,7 @@
     "sat": "0",
     "location": "Nowhere",
     "conninfo": {"up": "0", "down": "0"},
-    "sysinfo": {"uptime": "0", "battery": "0"}
+    "sysinfo": {"uptime": "0", "battery": "0"},
+    "netstat": {"parser": "nmea", "location": "Madison, WI US", "sat": "2", "geo": {"longitude": "43.051279", "latitude": "89.474382"}}
+
 }
