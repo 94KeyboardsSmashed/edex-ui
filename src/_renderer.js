@@ -1,3 +1,4 @@
+ELECTRON_ENABLE_LOGGING=1
 // Disable eval()
 window.eval = global.eval = function () {
     throw new Error("eval() is disabled for security reasons.");
@@ -44,6 +45,7 @@ const settingsFile = path.join(settingsDir, "settings.json");
 const shortcutsFile = path.join(settingsDir, "shortcuts.json");
 const lastWindowStateFile = path.join(settingsDir, "lastWindowState.json");
 
+const jsonDataFile = "./src/data/data.json"
 
 
 // Load config
@@ -203,7 +205,20 @@ function initSystemInformationProxy() {
 window.audioManager = new AudioManager();
 
 // Init Datacollection
-window.jsondata = require("./data/data.json")
+//window.jsondata = require("./data/data.json");
+
+window.jsondata = new Proxy({}, {
+    apply: () => {throw new Error("Cannot use jsondata proxy directly as a function")},
+    set: () => {throw new Error("Cannot set a property on the jsondata proxy")},
+    get: (target, prop, receiver) => {
+        let rawdata = fs.readFileSync(jsonDataFile);
+        let data = JSON.parse(rawdata);
+        return data[prop]
+    }
+});
+
+//throw new Error(window.jsondata.temp)
+
 
 // See #223
 electron.remote.app.focus();
