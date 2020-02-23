@@ -6,8 +6,8 @@ class Conninfo {
         this.parent = document.getElementById(parentId);
         this.parent.innerHTML += `<div id="mod_conninfo">
             <div id="mod_conninfo_innercontainer">
-                <h1>NETWORK TRAFFIC<i>UP / DOWN, MB/S</i></h1>
-                <h2>TOTAL<i>0B OUT, 0B IN</i></h2>
+                <h1>DOWNLINK SPEED<i>MB/S</i></h1>
+                <h2>TOTAL<i>0B IN</i></h2>
                 <canvas id="mod_conninfo_canvas_top"></canvas>
                 <canvas id="mod_conninfo_canvas_bottom"></canvas>
                 <h3>OFFLINE</h3>
@@ -62,7 +62,9 @@ class Conninfo {
     }
     updateInfo() {
         let time = new Date().getTime();
-
+        this.series[0].append(time, Math.random());
+        this.series[1].append(time, Math.random());
+/*
         if (window.mods.netstat.offline || window.mods.netstat.iface === null) {
             this.series[0].append(time, 0);
             this.series[1].append(time, 0);
@@ -85,7 +87,7 @@ class Conninfo {
 
                 this.total.innerText = `${this._pb(data[0].tx_bytes)} OUT, ${this._pb(data[0].rx_bytes)} IN`.toUpperCase();
             });
-        }
+        } */
     }
 }
 
