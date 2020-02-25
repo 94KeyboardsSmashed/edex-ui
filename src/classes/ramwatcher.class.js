@@ -6,7 +6,7 @@ class RAMwatcher {
         this.parent = document.getElementById(parentId);
         let modExtContainer = document.createElement("div");
         let ramwatcherDOM = `<div id="mod_ramwatcher_inner">
-                <h1>MEMORY<i id="mod_ramwatcher_info"></i></h1>
+                <h1>SATURATION<i id="mod_ramwatcher_info"></i></h1>
                 <div id="mod_ramwatcher_pointmap">`;
 
         for (var i = 0; i < 440; i++) {
@@ -15,7 +15,7 @@ class RAMwatcher {
 
         ramwatcherDOM += `</div>
                 <div id="mod_ramwatcher_swapcontainer">
-                    <h1>SWAP</h1>
+                    <h1>SPACE</h1>
                     <progress id="mod_ramwatcher_swapbar" max="100" value="0"></progress>
                     <h3 id="mod_ramwatcher_swaptext">0.0 GiB</h3>
                 </div>
@@ -35,7 +35,31 @@ class RAMwatcher {
         }, 1500);
     }
     updateInfo() {
-        window.si.mem().then(data => {
+        // Convert the data for the 440-points grid
+        let active = Math.round((440*window.jsondata.sat)/window.jsondata.sat);
+        let available = Math.round((440*window.jsondata.sat)/window.jsondata.sat);
+
+        // Update grid
+        this.points.slice(0, active).forEach(domPoint => {
+            if (domPoint.attributes.class.value !== "mod_ramwatcher_point active") {
+                domPoint.setAttribute("class", "mod_ramwatcher_point active");
+            }
+        });
+        this.points.slice(active, active+available).forEach(domPoint => {
+            if (domPoint.attributes.class.value !== "mod_ramwatcher_point available") {
+                domPoint.setAttribute("class", "mod_ramwatcher_point available");
+            }
+        });
+        this.points.slice(active+available, this.points.length).forEach(domPoint => {
+            if (domPoint.attributes.class.value !== "mod_ramwatcher_point free") {
+                domPoint.setAttribute("class", "mod_ramwatcher_point free");
+            }
+        });
+
+        document.getElementById("mod_ramwatcher_info").innerText = `USING ${window.jsondata.sat} OUT OF ${window.jsondata.sat} GiB`;
+        document.getElementById("mod_ramwatcher_swapbar").value = window.jsondata.sat || 0;
+        document.getElementById("mod_ramwatcher_swaptext").innerText = `${window.jsondata.sat} GiB`;
+        /*window.si.mem().then(data => {
             if (data.free+data.used !== data.total) throw("RAM Watcher Error: Bad memory values");
 
             // Convert the data for the 440-points grid
@@ -70,7 +94,7 @@ class RAMwatcher {
 
             let usedSwapGiB = Math.round((data.swapused/1073742000)*10)/10;
             document.getElementById("mod_ramwatcher_swaptext").innerText = `${usedSwapGiB} GiB`;
-        });
+        }); */
     }
     shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
