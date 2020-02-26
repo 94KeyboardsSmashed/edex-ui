@@ -139,32 +139,6 @@ class Cpuinfo {
                 }
             }
         }
-        
-        /*
-        window.si.currentLoad().then(data => {
-            let average = [[], []];
-
-            if (!data.cpus) return; // Prevent memleak in rare case where systeminformation takes extra time to retrieve CPU info (see github issue #216)
-
-            data.cpus.forEach((e, i) => {
-                this.series[i].append(new Date().getTime(), e.load);
-
-                if (i < this.divide) {
-                    average[0].push(e.load);
-                } else {
-                    average[1].push(e.load);
-                }
-            });
-            average.forEach((stats, i) => {
-                average[i] = Math.round(stats.reduce((a, b) => a + b, 0)/stats.length);
-
-                try {
-                    document.getElementById(`mod_cpuinfo_usagecounter${i}`).innerText = `Avg. ${average[i]}%`;
-                } catch(e) {
-                    // Fail silently, DOM element is probably getting refreshed (new theme, etc)
-                }
-            });
-        }); */
     }
     updateCPUtemp() {
         try {

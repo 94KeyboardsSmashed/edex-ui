@@ -75,30 +75,6 @@ class Conninfo {
         this.series[1].append(time, -window.jsondata.conninfo.down);        
 
         this.total.innerText = `${window.jsondata.conninfo.up} OUT, ${window.jsondata.conninfo.down} IN`.toUpperCase();
-/*
-        if (window.mods.netstat.offline || window.mods.netstat.iface === null) {
-            this.series[0].append(time, 0);
-            this.series[1].append(time, 0);
-            document.querySelector("div#mod_conninfo").setAttribute("class", "offline");
-            return;
-        } else {
-            document.querySelector("div#mod_conninfo").setAttribute("class", "");
-            window.si.networkStats(window.mods.netstat.iface).then(data => {
-
-                let max0 = this.series[0].maxValue;
-                let max1 = -this.series[1].minValue;
-                if (max0 > max1) {
-                    this.series[1].minValue = -max0;
-                } else if (max1 > max0) {
-                    this.series[0].maxValue = max1;
-                }
-
-                this.series[0].append(time, data[0].tx_sec/125000);
-                this.series[1].append(time, -data[0].rx_sec/125000);
-
-                this.total.innerText = `${this._pb(data[0].tx_bytes)} OUT, ${this._pb(data[0].rx_bytes)} IN`.toUpperCase();
-            });
-        } */
     }
 }
 
