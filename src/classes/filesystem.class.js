@@ -243,17 +243,17 @@ class FilesystemDisplay {
                 return (ordering[a.category] - ordering[b.category] || a.name.localeCompare(b.name));
             });
 
-            this.cwd.splice(0, 0, {
-                name: "Show disks",
-                type: "showDisks"
-            });
+            //this.cwd.splice(0, 0, {
+            //    name: "Show disks",
+            //    type: "showDisks"
+            //});
 
-            if (tcwd !== "/" && /^[A-Z]:\\$/i.test(tcwd) === false) {
-                this.cwd.splice(1, 0, {
-                    name: "Go up",
-                    type: "up"
-                });
-            }
+            //if (tcwd !== "/" && /^[A-Z]:\\$/i.test(tcwd) === false) {
+            //    this.cwd.splice(1, 0, {
+            //        name: "Go up",
+            //        type: "up"
+            //    });
+            //}
 
             this.dirpath = tcwd;
             this.render(this.cwd);
