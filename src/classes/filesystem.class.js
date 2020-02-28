@@ -150,7 +150,7 @@ class FilesystemDisplay {
             if (this.failed === true || this._reading) return false;
             this._reading = true;
 
-            document.getElementById("fs_disp_title_dir").innerText = this.dirpath;
+            document.getElementById("fs_disp_title_dir").innerText = path.basename(this.dirpath.toString());
             this.filesContainer.setAttribute("class", "");
             this.filesContainer.innerHTML = "";
             if (this._noTracking) {
@@ -222,6 +222,7 @@ class FilesystemDisplay {
                     if (e.category === "file" && tcwd === keyboardsDir && file.endsWith(".json")) e.type = "edex-kblayout";
                     if (e.category === "file" && tcwd === settingsDir && file === "settings.json") e.type = "edex-settings";
                     if (e.category === "file" && tcwd === settingsDir && file === "shortcuts.json") e.type = "edex-shortcuts";
+                    if (e.category === "file" && file.endsWith(".js")) e.type = "javascript";
 
                     if (file.startsWith(".")) e.hidden = true;
 
@@ -248,12 +249,12 @@ class FilesystemDisplay {
             //    type: "showDisks"
             //});
 
-            //if (tcwd !== "/" && /^[A-Z]:\\$/i.test(tcwd) === false) {
-            //    this.cwd.splice(1, 0, {
-            //        name: "Go up",
-            //        type: "up"
-            //    });
-            //}
+            if (tcwd !== "/" && !tcwd.endsWith("/root") && /^[A-Z]:\\$/i.test(tcwd) === false) {
+                    this.cwd.splice(0, 0, {
+                        name: "Go up",
+                        type: "up"
+                    });
+            }
 
             this.dirpath = tcwd;
             this.render(this.cwd);
@@ -293,7 +294,7 @@ class FilesystemDisplay {
                 document.getElementById("fs_disp_title_dir").innerText = "Showing available block devices";
                 this.filesContainer.setAttribute("class", "disks");
             } else {
-                document.getElementById("fs_disp_title_dir").innerText = this.dirpath;
+                document.getElementById("fs_disp_title_dir").innerText = path.basename(this.dirpath.toString());
                 this.filesContainer.setAttribute("class", "");
             }
             if (this._noTracking) {
@@ -327,6 +328,8 @@ class FilesystemDisplay {
                         } else {
                             cmd = `window.term[window.currentTerm].writelr("cd \\"${e.path.replace(/\\/g, '')}\\"")`;
                         }
+                    } else if (e.type === "javascript") {
+                        cmd = `window.term[window.currentTerm].writelr("${e.path.replace(/\\/g, '')}")`
                     } else {
                         cmd = `window.term[window.currentTerm].write("\\""+fsDisp.cwd[${blockIndex}].path+"\\"")}`;
                     }
@@ -337,6 +340,8 @@ class FilesystemDisplay {
                         cmd = `window.fsDisp.readFS(path.resolve(window.fsDisp.dirpath, ".."))`;
                     } else if (e.type === "disk" || e.type === "rom" || e.type === "usb") {
                         cmd = `window.fsDisp.readFS("${e.path.replace(/\\/g, '')}")`;
+                    } else if (e.type === "javascript") {
+                        cmd = `window.term[window.currentTerm].writelr("${e.path.replace(/\\/g, '')}")`
                     } else {
                         cmd = `window.term[window.currentTerm].write("\\""+fsDisp.cwd[${blockIndex}].path+"\\"")`;
                     }
@@ -395,6 +400,9 @@ class FilesystemDisplay {
                         break;
                     case "usb":
                         icon = this.icons.usb;
+                        break;
+                    case "javascript":
+                        icon = this.icons.javascript;
                         break;
                     case "edex-theme":
                         icon = this.edexIcons.theme;
