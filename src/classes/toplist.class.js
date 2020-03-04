@@ -6,7 +6,7 @@ class Toplist {
         this.parent = document.getElementById(parentId);
         this._element = document.createElement("div");
         this._element.setAttribute("id", "mod_toplist");
-        this._element.innerHTML = `<h1>SENSOR DATA<i>RATE | NAME | MAX | VAL</i></h1><br>
+        this._element.innerHTML = `<h1>SENSOR DATA<i>UNIT | NAME | MAX | VAL</i></h1><br>
         <table id="mod_toplist_table"></table>`;
 
         this.parent.append(this._element);

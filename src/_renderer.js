@@ -528,62 +528,6 @@ window.remakeKeyboard = layout => {
 
 window.focusShellTab = number => {
     window.audioManager.folder.play();
-
-    if (number !== window.currentTerm && window.term[number]) {
-        window.currentTerm = number;
-
-        document.querySelectorAll(`ul#main_shell_tabs > li:not(:nth-child(${number+1}))`).forEach(e => {
-            e.setAttribute("class", "");
-        });
-        document.getElementById("shell_tab"+number).setAttribute("class", "active");
-
-        document.querySelectorAll(`div#main_shell_innercontainer > pre:not(:nth-child(${number+1}))`).forEach(e => {
-            e.setAttribute("class", "");
-        });
-        document.getElementById("terminal"+number).setAttribute("class", "active");
-
-        window.term[number].fit();
-        window.term[number].term.focus();
-        window.term[number].resendCWD();
-
-        window.fsDisp.followTab();
-    } else if (number > 0 && number <= 4 && window.term[number] !== null && typeof window.term[number] !== "object") {
-        window.term[number] = null;
-
-        document.getElementById("shell_tab"+number).innerHTML = "<p>LOADING...</p>";
-        ipc.send("ttyspawn", "true");
-        ipc.once("ttyspawn-reply", (e, r) => {
-            if (r.startsWith("ERROR")) {
-                document.getElementById("shell_tab"+number).innerHTML = "<p>ERROR</p>";
-            } else if (r.startsWith("SUCCESS")) {
-                let port = Number(r.substr(9));
-
-                window.term[number] = new Terminal({
-                    role: "client",
-                    parentId: "terminal"+number,
-                    port
-                });
-
-                window.term[number].onclose = e => {
-                    delete window.term[number].onprocesschange;
-                    document.getElementById("shell_tab"+number).innerHTML = "<p>EMPTY</p>";
-                    document.getElementById("terminal"+number).innerHTML = "";
-                    window.term[number].term.dispose();
-                    delete window.term[number];
-                    window.useAppShortcut("PREVIOUS_TAB");
-                };
-
-                window.term[number].onprocesschange = p => {
-                    document.getElementById("shell_tab"+number).innerHTML = `<p>#${number+1} - ${p}</p>`;
-                };
-
-                document.getElementById("shell_tab"+number).innerHTML = `<p>::${port}</p>`;
-                setTimeout(() => {
-                    window.focusShellTab(number);
-                }, 500);
-            }
-        });
-    }
 };
 
 // Settings editor
